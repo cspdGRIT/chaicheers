@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChaiCheers - Support Made Simple ☕</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -444,6 +443,14 @@
             margin-bottom: 2rem;
         }
 
+        .payment-option {
+            display: none;
+        }
+
+        .payment-option.active {
+            display: block;
+        }
+
         .qr-container {
             text-align: center;
             padding: 2rem;
@@ -459,6 +466,7 @@
             border-radius: 12px;
             display: inline-block;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
         }
 
         .card-form {
@@ -1380,6 +1388,33 @@
             display: inline-block;
             margin-bottom: 0.5rem;
         }
+
+        .qr-placeholder {
+            width: 150px;
+            height: 150px;
+            background: #f3f4f6;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin: 0 auto;
+        }
+
+        .mini-qr-placeholder {
+            width: 40px;
+            height: 40px;
+            background: #f3f4f6;
+            border: 1px dashed #d1d5db;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
     </style>
 </head>
 <body>
@@ -1428,11 +1463,11 @@
                 </p>
                 
                 <div class="hero-buttons">
-                    <button class="btn-primary">
+                    <button class="btn-primary" onclick="showTab('integrate')">
                         <span>Start Your Page - Free Forever!</span>
                         <i class="fas fa-arrow-right"></i>
                     </button>
-                    <button class="btn-secondary">See Live Demo</button>
+                    <button class="btn-secondary" onclick="scrollToDemo()">See Live Demo</button>
                 </div>
 
                 <div class="stats">
@@ -1456,7 +1491,7 @@
             </section>
 
             <!-- Demo Widget -->
-            <section class="demo-section">
+            <section class="demo-section" id="demo-section">
                 <div class="container">
                     <h3 style="font-size: 2.5rem; font-weight: bold; text-align: center; margin-bottom: 1rem; color: #111827;">
                         Try it right here! 👇
@@ -1522,33 +1557,41 @@
                                 </div>
                                 <div class="qr-container">
                                     <div class="qr-code">
-                                        <canvas id="qr-canvas" width="150" height="150"></canvas>
+                                        <div class="qr-placeholder" id="qr-placeholder">
+                                            <div style="text-align: center;">
+                                                <i class="fas fa-qrcode" style="font-size: 2rem; color: #6b7280; margin-bottom: 0.5rem;"></i>
+                                                <div>QR Code for ₹<span id="qr-amount">50</span></div>
+                                                <div style="font-size: 0.75rem; margin-top: 0.25rem;">8341346818@ybl</div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="payment-instructions">
-                                        <p><i class="fas fa-mobile-alt"></i> Open any UPI app → Scan QR → Pay ₹<span id="qr-amount">50</span></p>
+                                        <p><i class="fas fa-mobile-alt"></i> Open any UPI app → Scan QR → Pay ₹<span id="qr-amount-2">50</span></p>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Card Payment -->
-                            <div id="card-payment" class="payment-option card-form">
-                                <div class="form-group">
-                                    <label>Card Number</label>
-                                    <input type="text" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCardNumber(this)">
-                                </div>
-                                <div class="form-row">
+                            <div id="card-payment" class="payment-option">
+                                <div class="card-form">
                                     <div class="form-group">
-                                        <label>Expiry</label>
-                                        <input type="text" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)">
+                                        <label>Card Number</label>
+                                        <input type="text" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCardNumber(this)">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Expiry</label>
+                                            <input type="text" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>CVV</label>
+                                            <input type="text" placeholder="123" maxlength="3" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>CVV</label>
-                                        <input type="text" placeholder="123" maxlength="3" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                                        <label>Cardholder Name</label>
+                                        <input type="text" placeholder="John Doe">
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Cardholder Name</label>
-                                    <input type="text" placeholder="John Doe">
                                 </div>
                             </div>
                         </div>
@@ -1753,7 +1796,7 @@
                                                 <div style="width: 30px; height: 20px; background: #ef4444; border-radius: 4px; font-size: 0.6rem; color: white; display: flex; align-items: center; justify-content: center;">₹50</div>
                                             </div>
                                             <div class="mini-qr">
-                                                <canvas id="mini-qr-canvas" width="40" height="40"></canvas>
+                                                <div class="mini-qr-placeholder">QR</div>
                                             </div>
                                         </div>
                                         <div style="font-size: 0.7rem; color: #6b7280;">Scan QR or click amounts</div>
@@ -1837,7 +1880,7 @@
                         </div>
                         
                         <div class="cta-button">
-                            <button class="btn-primary">
+                            <button class="btn-primary" onclick="showTab('pricing')">
                                 Get Started Now - It's Free! 🚀
                             </button>
                         </div>
@@ -1873,7 +1916,7 @@
                                 <li><i class="fas fa-check"></i> 5% platform fee</li>
                             </ul>
                             
-                            <button class="pricing-btn secondary">Start Free</button>
+                            <button class="pricing-btn secondary" onclick="showTab('integrate')">Start Free</button>
                         </div>
 
                         <!-- Pro Plan -->
@@ -1895,7 +1938,7 @@
                                 <li><i class="fas fa-check"></i> Monthly payout reports</li>
                             </ul>
                             
-                            <button class="pricing-btn primary">Upgrade to Pro 🚀</button>
+                            <button class="pricing-btn primary" onclick="upgradeAlert('Pro')">Upgrade to Pro 🚀</button>
                         </div>
 
                         <!-- Business Plan -->
@@ -1916,7 +1959,7 @@
                                 <li><i class="fas fa-check"></i> Dedicated account manager</li>
                             </ul>
                             
-                            <button class="pricing-btn secondary">Contact Sales</button>
+                            <button class="pricing-btn secondary" onclick="contactSales()">Contact Sales</button>
                         </div>
                     </div>
 
@@ -1968,30 +2011,30 @@
                             <li><a href="#" onclick="showTab('home')">Features</a></li>
                             <li><a href="#" onclick="showTab('pricing')">Pricing</a></li>
                             <li><a href="#" onclick="showTab('integrate')">Integration</a></li>
-                            <li><a href="#">API Documentation</a></li>
-                            <li><a href="#">QR Code Guide</a></li>
+                            <li><a href="#" onclick="alert('API Documentation coming soon!')">API Documentation</a></li>
+                            <li><a href="#" onclick="alert('QR Code Guide coming soon!')">QR Code Guide</a></li>
                         </ul>
                     </div>
                     
                     <div class="footer-section">
                         <h4>Support</h4>
                         <ul class="footer-links">
-                            <li><a href="#">Help Center</a></li>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Community</a></li>
-                            <li><a href="#">UPI Setup Guide</a></li>
-                            <li><a href="#">Blog</a></li>
+                            <li><a href="#" onclick="alert('Help Center coming soon!')">Help Center</a></li>
+                            <li><a href="#" onclick="contactSales()">Contact Us</a></li>
+                            <li><a href="#" onclick="alert('Community coming soon!')">Community</a></li>
+                            <li><a href="#" onclick="alert('UPI Setup Guide coming soon!')">UPI Setup Guide</a></li>
+                            <li><a href="#" onclick="alert('Blog coming soon!')">Blog</a></li>
                         </ul>
                     </div>
                     
                     <div class="footer-section">
                         <h4>Legal</h4>
                         <ul class="footer-links">
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms of Service</a></li>
-                            <li><a href="#">Cookie Policy</a></li>
-                            <li><a href="#">GDPR</a></li>
-                            <li><a href="#">Security</a></li>
+                            <li><a href="#" onclick="alert('Privacy Policy coming soon!')">Privacy Policy</a></li>
+                            <li><a href="#" onclick="alert('Terms of Service coming soon!')">Terms of Service</a></li>
+                            <li><a href="#" onclick="alert('Cookie Policy coming soon!')">Cookie Policy</a></li>
+                            <li><a href="#" onclick="alert('GDPR info coming soon!')">GDPR</a></li>
+                            <li><a href="#" onclick="alert('Security info coming soon!')">Security</a></li>
                         </ul>
                     </div>
                 </div>
@@ -2018,27 +2061,6 @@
         let selectedAmount = 50;
         let currentPaymentMethod = 'upi';
 
-        // Generate QR code for UPI payment
-        function generateQR(amount, canvasId) {
-            const upiId = '8341346818@ybl';
-            const payeeName = 'ChaiCheers';
-            const upiString = `upi://pay?pa=${upiId}&pn=${payeeName}&am=${amount}&cu=INR&tn=Support%20via%20ChaiCheers`;
-            
-            const canvas = document.getElementById(canvasId);
-            if (canvas) {
-                QRCode.toCanvas(canvas, upiString, {
-                    width: canvasId === 'mini-qr-canvas' ? 40 : 150,
-                    margin: 1,
-                    color: {
-                        dark: '#1f2937',
-                        light: '#ffffff'
-                    }
-                }, function (error) {
-                    if (error) console.error(error);
-                });
-            }
-        }
-
         function showTab(tabName) {
             // Hide all tabs
             const tabs = document.querySelectorAll('.tab-content');
@@ -2058,12 +2080,8 @@
                 }
             });
 
-            // Generate QR codes when showing relevant tabs
-            if (tabName === 'home') {
-                setTimeout(() => generateQR(selectedAmount, 'qr-canvas'), 100);
-            } else if (tabName === 'integrate') {
-                setTimeout(() => generateQR(50, 'mini-qr-canvas'), 100);
-            }
+            // Scroll to top when switching tabs
+            window.scrollTo(0, 0);
         }
 
         function selectAmount(amount, element) {
@@ -2081,14 +2099,9 @@
             
             // Update QR amount display
             const qrAmountSpan = document.getElementById('qr-amount');
-            if (qrAmountSpan) {
-                qrAmountSpan.textContent = amount;
-            }
-            
-            // Regenerate QR code with new amount
-            if (currentPaymentMethod === 'upi') {
-                generateQR(amount, 'qr-canvas');
-            }
+            const qrAmountSpan2 = document.getElementById('qr-amount-2');
+            if (qrAmountSpan) qrAmountSpan.textContent = amount;
+            if (qrAmountSpan2) qrAmountSpan2.textContent = amount;
         }
 
         function selectPaymentMethod(method, element) {
@@ -2108,18 +2121,28 @@
             if (method === 'upi') {
                 upiPayment.classList.add('active');
                 cardPayment.classList.remove('active');
-                generateQR(selectedAmount, 'qr-canvas');
             } else {
                 upiPayment.classList.remove('active');
                 cardPayment.classList.add('active');
+                cardPayment.classList.add('card-form');
             }
         }
 
         function processPayment() {
             if (currentPaymentMethod === 'upi') {
-                alert(`Opening UPI app for ₹${selectedAmount} payment to 8341346818@ybl`);
+                const upiId = '8341346818@ybl';
+                const amount = selectedAmount;
+                const upiLink = `upi://pay?pa=${upiId}&pn=ChaiCheers&am=${amount}&cu=INR&tn=Support%20via%20ChaiCheers`;
+                
+                // Try to open UPI app
+                window.location.href = upiLink;
+                
+                // Show success message
+                setTimeout(() => {
+                    alert(`✅ Payment initiated for ₹${amount} to ${upiId}.\n\nIf your UPI app didn't open automatically, please scan the QR code or manually pay to: ${upiId}`);
+                }, 1000);
             } else {
-                alert(`Processing card payment of ₹${selectedAmount}...`);
+                alert(`💳 Processing card payment of ₹${selectedAmount}...\n\nNote: This is a demo. In production, this would redirect to a secure payment gateway.`);
             }
         }
 
@@ -2160,12 +2183,22 @@
             input.value = value;
         }
 
+        function scrollToDemo() {
+            document.getElementById('demo-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function upgradeAlert(plan) {
+            alert(`🚀 Upgrade to ${plan}!\n\nYou'll be redirected to our secure payment page to upgrade your account.\n\nFeatures included:\n• Custom QR designs\n• Advanced analytics\n• Priority support\n• Lower fees`);
+        }
+
+        function contactSales() {
+            alert(`📞 Contact Sales\n\nEmail: sales@chaicheers.com\nPhone: +91-8341346818\nWhatsApp: +91-8341346818\n\nOur team will contact you within 24 hours to discuss your needs!`);
+        }
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
-            // Generate initial QR code
-            generateQR(selectedAmount, 'qr-canvas');
-            generateQR(50, 'mini-qr-canvas');
-
+            console.log('ChaiCheers loaded successfully! 🚀');
+            
             // Add interactive behaviors
             const stats = document.querySelectorAll('.stat-number');
             const observer = new IntersectionObserver((entries) => {
